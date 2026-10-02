@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성냥팔이 소녀</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap');
+
+        :root {
+            --panel-border: #7a6a58;
+            --text-dark: #2b2b2b;
+            --accent-gold: #ffd93d;
+            --bg-panel: #fffdf8;
+            --bg-body: #e8dcca;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Serif KR', serif;
+            background: linear-gradient(180deg, var(--bg-body) 0%, #d9c9b8 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* === 표지 === */
+        .cover-page {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: #1a1a2f;
+        }
+
+        .cover-bg {
+            position: absolute;
+            inset: 0;
+            background: url('images/2차성냥/성냥팔이소녀표지.png') no-repeat center center;
+            background-size: cover;
+            opacity: 0.9;
+            animation: coverFadeIn 2s ease-out forwards;
+        }
+        @keyframes coverFadeIn {
+            from { opacity: 0; transform: scale(1.05); }
+            to { opacity: 0.9; transform: scale(1); }
+        }
+
+        .cover-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%);
+        }
+
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2.5s infinite ease-in-out;
+            z-index: 2;
+        }
+        @keyframes twinkle {
+            0%,100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.4); }
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .cover-title {
+            font-size: clamp(3rem, 10vw, 5rem);
+            color: #fff;
+            text-shadow: 0 0 30px var(--accent-gold), 0 0 60px rgba(255,200,50,0.4);
+            letter-spacing: 0.2em;
+            animation: fadeUp 2s ease-out forwards;
+        }
+        .cover-sub {
+            margin-top: 1rem;
+            color: #f0e6d2;
+            font-size: 1.2rem;
+            animation: fadeUp 2s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .start-btn {
+            margin-top: 3rem;
+            background: rgba(255, 217, 61, 0.25);
+            border: 2px solid var(--accent-gold);
+            color: #fff;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            animation: fadeUp 2s ease-out 1s forwards, pulse 2s infinite 1.5s;
+            opacity: 0;
+            font-family: inherit;
+        }
+        .start-btn:hover {
+            background: rgba(255, 217, 61, 0.45);
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(255, 217, 61, 0.4);
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 217, 61, 0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(255, 217, 61, 0); }
+        }
+
+        /* === 페이지 전환 === */
+        .page-container {
+            display: none;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem 3rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .page-container.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(15px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .page-num {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #887;
+            margin-bottom: 1rem;
+        }
+
+        /* ✅ 빈 공간 없이 꽉 채운 그리드 */
+        .comic-grid {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            grid-template-rows: repeat(2, 1fr);
+            gap: 1rem;
+            min-height: 75vh;
+        }
+
+        .panel-main {
+            grid-row: span 2;
+            display: flex;
+            flex-direction: column;
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .panel-small {
+            display: flex;
+            flex-direction: column;
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .panel-illust {
+            flex: 1;
+            min-height: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .panel-illust img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .panel-illust:hover img {
+            transform: scale(1.02);
+        }
+        .panel-illust span {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.88);
+            padding: 0.4rem 1.1rem;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: #333;
+            white-space: nowrap;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .panel-text {
+            padding: 1rem;
+            font-size: 0.98rem;
+            line-height: 1.75;
+            background: var(--bg-panel);
+            border-top: 2px solid #e8ddd0;
+        }
+
+        /* ✅ 모바일 반응형 */
+        @media (max-width: 768px) {
+            .comic-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                gap: 1.2rem;
+            }
+            .panel-main {
+                grid-row: span 1;
+                min-height: 400px;
+            }
+        }
+
+        /* 페이지 네비게이션 */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem 2rem;
+        }
+        .nav-btn {
+            background: var(--panel-border);
+            color: #fff;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .nav-btn:hover {
+            background: #635442;
+            transform: translateY(-2px);
+        }
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #776;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- === 표지 === -->
+<div class="cover-page" id="cover">
+    <div class="cover-bg"></div>
+    <div class="cover-overlay"></div>
+    <div class="cover-content">
+        <h1 class="cover-title">성냥팔이 소녀</h1>
+        <p class="cover-sub">안데르센 동화</p>
+        <button class="start-btn" onclick="goToPage(1)">이야기 시작하기 ✨</button>
+    </div>
+</div>
+
+<!-- === 페이지 1 === -->
+<div class="page-container active" id="page1">
+    <p class="page-num">1 페이지</p>
+    <div class="comic-grid">
+        <div class="panel-main">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이1.png" alt="추운 겨울 저녁, 눈 내리는 거리">
+                <span>추운 겨울 저녁, 눈 내리는 거리</span>
+            </div>
+            <div class="panel-text">
+                지독히도 추운 날이었다. 눈이 내리고 어둠이 찾아왔다. 그해의 마지막 저녁이었다. 한 가엾은 소녀가 모자도 쓰지 않고 맨발로 춥고 우울하게 거리를 걷고 있다. 물론 집을 나설 때 신발을 신고 있었지만 지금은 아무 소용이 없었다. 신발은 엄마의 것이었기에 소녀에게 너무 컸다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이2.png" alt="마차가 달려감">
+                <span>마차가 달려감</span>
+            </div>
+            <div class="panel-text">
+                소녀는 길을 뛰어 건너다가 신발 한 짝을 잃어버렸는데, 마차 두 대가 덜컹거리며 엄청나게 빨리 지나가는 바람에 신발을 다시 찾을 수 없었다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이3.png" alt="소년이 신발을 가져감">
+                <span>소년이 신발을 가져감</span>
+            </div>
+            <div class="panel-text">
+                한 소년이 나중에 아이를 낳으면 요람으로 쓰겠다면서 나머지 한 짝을 가지고 달아나버렸다. 그래서 소녀는 맨발로 걷고 있었다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이4.png" alt="성냥을 들고 서있는 소녀">
+                <span>성냥을 들고 서있는 소녀</span>
+            </div>
+            <div class="panel-text">
+                두 발은 꽁꽁 얼어 울긋불긋했다. 낡은 앞치마에 성냥갑 몇 개를 들고 다녔다. 하루 종일 단 한 사람도 성냥을 사지 않았고, 1센트도 주지 않았다.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- === 페이지 2 === -->
+<div class="page-container" id="page2">
+    <p class="page-num">2 페이지</p>
+    <div class="comic-grid">
+        <div class="panel-main">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이5.png" alt="첫 성냥에 비친 따뜻한 난로">
+                <span>첫 성냥에 비친 따뜻한 난로</span>
+            </div>
+            <div class="panel-text">
+                추위와 배고픔으로 벌벌 떨었다. 눈꽃이 머리카락 위로 떨어졌다. 창문에서는 불빛이 새고 거위 굽는 냄새가 났다. 모퉁이에 앉아 몸을 웅크렸지만 점점 더 추웠다. 집에 가고 싶지 않았다. 성냥을 팔지 못했기에 아버지가 때릴 것이고, 집도 지붕 틈으로 바람이 불어와 추위를 막아주지 못했다. 손이 얼어붙었고, 성냥 하나라도 켜보고 싶었다. 하나를 꺼내 벽에 그었다! 치지직! 반짝이는 황동 손잡이의 거대한 쇠 난로가 보였다. 불이 너무나 따뜻했다! 발을 내미는 순간 성냥이 꺼지고 난로는 사라졌다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이6.png" alt="창가의 불빛과 음식 냄새">
+                <span>창가의 불빛과 음식 냄새</span>
+            </div>
+            <div class="panel-text">
+                창문 너머로 식탁이 보이고, 거위 구이 냄새가 코를 찔렀다. 배는 너무나 고팠다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이7.png" alt="아버지에게 맞을 생각에 떪">
+                <span>아버지에게 맞을 생각에 떪</span>
+            </div>
+            <div class="panel-text">
+                돈을 벌지 못했으니 집에 가면 아버지가 분명히 화를 낼 것이다. 그 생각만으로도 발이 떨어지지 않았다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이8.png" alt="꺼진 성냥불">
+                <span>꺼진 성냥불</span>
+            </div>
+            <div class="panel-text">
+                손에는 다 타버린 성냥 끝만 남았다. 하지만 아직 더 켜볼 성냥이 남아 있다.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- === 페이지 3 === -->
+<div class="page-container" id="page3">
+    <p class="page-num">3 페이지</p>
+    <div class="comic-grid">
+        <div class="panel-main">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이9.png" alt="두 번째 성냥 — 식탁과 거위 구이">
+                <span>두 번째 성냥 — 식탁과 거위 구이</span>
+            </div>
+            <div class="panel-text">
+                두 번째 성냥을 벽에 그었다! 불빛이 벽을 투명하게 만들었다. 탁자에는 흰 식탁보가 깔리고 찬란한 저녁 식사가 차려 있었다. 사과와 자두로 속을 채운 거위 구이에서 김이 모락모락 났다. 그 거위가 접시에서 펄쩍 뛰어내려 칼과 포크를 품에 안은 채 소녀에게 걸어왔다! 배가 너무 고팠다. 그런데 다시 성냥이 꺼지고, 두껍고 차가운 벽만 보일 뿐이었다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이10.png" alt="투명해진 벽">
+                <span>투명해진 벽</span>
+            </div>
+            <div class="panel-text">
+                벽이 마치 하늘하늘한 막처럼 투명해지며 집 안이 훤히 들여다보였다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이11.png" alt="맛있는 음식들">
+                <span>맛있는 음식들</span>
+            </div>
+            <div class="panel-text">
+                따뜻한 음식, 먹음직스러운 과일과 고기… 정말 눈앞에 있는 것처럼 생생했다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이12.png" alt="다시 차가운 벽">
+                <span>다시 차가운 벽</span>
+            </div>
+            <div class="panel-text">
+                불빛이 사라지자 모든 것은 사라지고, 손가락 끝으로 벽을 만져보니 차가운 돌벽이었다.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- === 페이지 4 === -->
+<div class="page-container" id="page4">
+    <p class="page-num">4 페이지</p>
+    <div class="comic-grid">
+        <div class="panel-main">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이13.png" alt="세 번째 성냥 — 아름다운 크리스마스트리">
+                <span>세 번째 성냥 — 아름다운 크리스마스트리</span>
+            </div>
+            <div class="panel-text">
+                세 번째 성냥을 켰다! 이번에는 아름다운 크리스마스트리가 눈앞에 나타났다. 부자 상인 집 유리문에서 본 것보다 훨씬 더 아름다웠다. 수천 개의 촛불이 푸른 나뭇가지 위에서 활활 타오르고, 알록달록한 그림들이 소녀를 내려다보았다. 두 손을 내밀어 불빛을 잡으려는 순간, 성냥이 꺼졌다. 촛불들은 점점 높이 올라가 마치 하늘의 별처럼 되었다. 별 하나가 길게 꼬리를 끌며 떨어져 내렸다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이14.png" alt="반짝이는 촛불들">
+                <span>반짝이는 촛불들</span>
+            </div>
+            <div class="panel-text">
+                나뭇가지마다 불빛이 가득하고, 그 빛이 눈부시게 아름다웠다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이15.png" alt="별이 되어 올라가는 불빛">
+                <span>별이 되어 올라가는 불빛</span>
+            </div>
+            <div class="panel-text">
+                불빛이 하나둘씩 높이 올라가 밤 별이 되어 반짝이기 시작했다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이16.png" alt="떨어지는 별">
+                <span>떨어지는 별</span>
+            </div>
+            <div class="panel-text">
+                소녀는 생각했다. "누군가 저세상으로 가고 있구나." 할머니가 별이 떨어지면 영혼이 하늘로 간다고 했었다.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- === 페이지 5 === -->
+<div class="page-container" id="page5">
+    <p class="page-num">5 페이지</p>
+    <div class="comic-grid">
+        <div class="panel-main">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이17.png" alt="네 번째 성냥 — 할머니가 오시다">
+                <span>네 번째 성냥 — 할머니가 오시다</span>
+            </div>
+            <div class="panel-text">
+                다시 성냥을 벽에 그었다! 환한 불꽃 속에 할머니가 서 계셨다. 세상에서 누구보다 소녀를 사랑해 주었던, 친절하고도 사랑스러운 할머니셨다. 소녀는 소리쳤다. "할머니! 저를 데려가 주세요! 성냥이 꺼지면 할머니도 사라지시겠죠? 따뜻한 난로도, 맛있는 거위도, 아름다운 크리스마스트리도 모두 사라졌잖아요!" 소녀는 할머니와 함께 있고 싶어서 남은 성냥 꾸러미를 모조리 꺼냈다. 불빛이 대낮처럼 환하게 밝혀졌다. 할머니는 이제까지 보았을 때보다 더욱 위엄 있고 아름답게 웃고 계셨다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이18.png" alt="할머니의 따뜻한 미소">
+                <span>할머니의 따뜻한 미소</span>
+            </div>
+            <div class="panel-text">
+                할머니는 빛 속에서 맑고 환하게 웃고 계셨다. 너무나 그리웠던 모습이었다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이19.png" alt="성냥을 모두 켜는 소녀">
+                <span>성냥을 모두 켜는 소녀</span>
+            </div>
+            <div class="panel-text">
+                할머니가 사라지지 않도록, 주머니 속 성냥을 하나둘 모두 켰다. 주변이 온통 밝은 빛으로 가득 찼다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이20.png" alt="할머니가 품에 안아주심">
+                <span>할머니가 품에 안아주심</span>
+            </div>
+            <div class="panel-text">
+                할머니는 두 팔로 소녀를 꼭 품에 안았다. 너무나 포근하고 따뜻했다.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- === 페이지 6 === -->
+<div class="page-container" id="page6">
+    <p class="page-num">6 페이지 · 마지막</p>
+    <div class="comic-grid">
+        <div class="panel-main">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이21.png" alt="하늘로 날아가는 소녀와 할머니">
+                <span>하늘로 날아가는 소녀와 할머니</span>
+            </div>
+            <div class="panel-text">
+                두 사람은 함께 밝고 경쾌하게 땅 위로 날아올랐다. 아주 높이, 아주 멀리. 저기 추위도 배고픔도 두려움도 없는 곳으로. 하느님과 함께 있는 영원한 행복한 곳으로. 다음 날 아침, 새해의 태양이 붉게 떠올랐다. 사람들은 모퉁이 벽에 기대어 앉아 있는 소녀를 발견했다. 뺨은 붉고 입가에는 미소를 지은 채, 얼어붙은 몸으로. 소녀는 거기 앉아 있었고, 움켜쥔 손에는 다 타버린 성냥 꾸러미가 남아 있었다. 사람들은 "따뜻한 곳으로 가고 싶었겠지" 라고 말했지만, 소녀는 이미 할머니와 함께 따뜻한 하늘나라에 있었을 것이다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이22.png" alt="새해의 해가 뜸">
+                <span>새해의 해가 뜸</span>
+            </div>
+            <div class="panel-text">
+                새해 첫날의 밝은 태양이 거리를 비추고, 차가운 공기 속에 희망의 빛이 번졌다.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이23.png" alt="사람들이 발견한 소녀">
+                <span>사람들이 발견한 소녀</span>
+            </div>
+            <div class="panel-text">
+                미소를 지은 채 편안히 잠든 듯한 소녀의 모습. 얼마나 따뜻한 꿈을 꾸고 있었을까.
+            </div>
+        </div>
+        <div class="panel-small">
+            <div class="panel-illust">
+                <img src="images/2차성냥/성냥팔이24.png" alt="하늘의 별이 된 소녀">
+                <span>하늘의 별이 된 소녀</span>
+            </div>
+            <div class="panel-text">
+                이제 소녀는 할머니와 함께 언제나 따뜻하고 행복한 곳에 있을 것이다.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 페이지 이동 버튼 -->
+<div class="nav-buttons">
+    <button class="nav-btn" id="prevBtn" onclick="prevPage()">← 이전</button>
+    <button class="nav-btn" id="nextBtn" onclick="nextPage()">다음 →</button>
+</div>
+
+<footer>
+    <p>성냥팔이 소녀 — 안데르센 원작</p>
+    <p>표지: images/표지.png / 본문: images/2차 성냥/</p>
+</footer>
+
+<script>
+const totalPages = 6;
+let currentPage = 1;
+
+// 표지 별 효과
+const cover = document.querySelector('.cover-page');
+for(let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.classList.add('star');
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 2.5 + 's';
+    cover.appendChild(s);
+}
+
+function goToPage(num) {
+    document.getElementById('cover').style.display = 'none';
+    for(let i = 1; i <= totalPages; i++) {
+        document.getElementById('page' + i).classList.remove('active');
+    }
+    currentPage = num;
+    document.getElementById('page' + num).classList.add('active');
+    updateNavButtons();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextPage() {
+    if(currentPage < totalPages) goToPage(currentPage + 1);
+}
+
+function prevPage() {
+    if(currentPage > 1) goToPage(currentPage - 1);
+    else {
+        document.getElementById('cover').style.display = 'flex';
+        for(let i = 1; i <= totalPages; i++) {
+            document.getElementById('page' + i).classList.remove('active');
+        }
+    }
+}
+
+function updateNavButtons() {
+    document.getElementById('prevBtn').disabled = false;
+    document.getElementById('nextBtn').disabled = (currentPage >= totalPages);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과제 선택</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            gap: 2rem;
+        }
+
+        .title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #4a5568;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 340px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 1.2rem 2rem;
+            font-size: 1.4rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        #letter button {
+            background: linear-gradient(135deg, #faf0e6 0%, #f0d9b5 100%);
+            color: #5c4033;
+        }
+        #letter button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(139, 90, 43, 0.25);
+        }
+
+        #story3 button {
+            background: linear-gradient(135deg, #e6f2ff 0%, #b3d9ff 100%);
+            color: #1e3a5f;
+        }
+        #story3 button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(30, 58, 95, 0.25);
+        }
+
+        #story2 button {
+            background: linear-gradient(135deg, #f0fff4 0%, #b2f2bb 100%);
+            color: #2d6a4f;
+        }
+        #story2 button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(45, 106, 79, 0.25);
+        }
+
+        @media (min-width: 768px) {
+            .button-container {
+                flex-direction: row;
+                max-width: 900px;
+            }
+            button {
+                font-size: 1.3rem;
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1 class="title">📂 과제 선택</h1>
+        <p class="subtitle">보고 싶은 항목을 선택하세요</p>
+        <div class="button-container">
+            <a href="letter.html" id="letter">
+                <button>✉️ 편지</button>
+            </a>
+            <a href="story3.html" id="story3">
+                <button>📖 동화</button>
+            </a>
+            <a href="story2.html" id="story2">
+                <button>📚 만화</button>
+            </a>
+        </div>
+    </main>
+</body>
+</html>
