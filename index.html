@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>봄이오 | 요리주점</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>봄이오</h1>
+        <nav>
+            <ul>
+                <li id="thro" >소개</li>
+                <li id="apsb">메뉴</li>
+                <li id="dhtlsmsrlf">오시는길</li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2 id="name"></h2>
+        <div id="main"></div>
+        <div id="map" style="width:100%;height:350px;"></div>
+    </main>
+</body>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f8d558fae1f41239d9d2ac7a0a2e4d59&libraries=services"></script>
+<script>
+    const main = document.getElementById('main');
+    const thro = document.getElementById('thro');
+    const apsb = document.getElementById('apsb');
+    const dhtlsmsrlf = document.getElementById('dhtlsmsrlf');
+    const name = document.getElementById('name');
+
+    throl();
+
+    function throl(){
+        name.textContent = '소개';
+        document.getElementById('map').style.display = 'none';
+        const xhttp = new XMLHttpRequest();
+        xhttp.open('GET', 'thro.txt');
+
+        xhttp.onload = () => {
+            main.innerHTML = xhttp.responseText;
+        };
+        
+        xhttp.send();
+    };
+
+    thro.addEventListener('click', throl);
+    apsb.addEventListener('click', () => {
+        name.textContent = '메뉴';
+        document.getElementById('map').style.display = 'none';
+        const xhttp = new XMLHttpRequest();
+        xhttp.open('GET', 'apsb.txt');
+
+        xhttp.onload = () => {
+            main.innerHTML = xhttp.responseText;
+        };
+
+        xhttp.send();
+    });
+    dhtlsmsrlf.addEventListener('click', () => {
+        name.textContent = '오시는길';
+        document.getElementById('map').style.display = 'block';
+        const xhttp = new XMLHttpRequest();
+        xhttp.open('GET', 'dhtlsmsrlf.txt');
+
+        xhttp.onload = () => {
+            main.innerHTML = xhttp.responseText;
+        };
+
+        xhttp.send();
+
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+        mapOption = { 
+            center: new kakao.maps.LatLng(37.5488631836393, 126.848449692343), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+        // 마커가 표시될 위치입니다 
+        var markerPosition  = new kakao.maps.LatLng(37.5488631836393, 126.848449692343); 
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+            position: markerPosition
+        });
+
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+
+        // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+        // marker.setMap(null);    
+    });
+
+    
+</script>
+</html>

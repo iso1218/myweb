@@ -1,0 +1,292 @@
+
+/* =========================
+   기본 설정
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #f8f5ef;
+    color: #33291f;
+    font-family: "Malgun Gothic", sans-serif;
+    line-height: 1.8;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* =========================
+   상단 헤더
+========================= */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 8%;
+    background-color: #fffdf8;
+    border-bottom: 1px solid #e8dfd2;
+}
+
+header h1 {
+    margin: 0;
+    color: #60452f;
+    font-size: 32px;
+    letter-spacing: 4px;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+nav li {
+    position: relative;
+    padding: 8px 0;
+    color: #5e5144;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.25s;
+}
+
+nav li:hover {
+    color: #b77945;
+}
+
+/* 메뉴에 마우스를 올리면 밑줄 표시 */
+nav li::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #b77945;
+    transition: width 0.25s;
+}
+
+nav li:hover::after {
+    width: 100%;
+}
+
+/* =========================
+   메인 콘텐츠
+========================= */
+main {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 650px;
+    margin: 0 auto;
+    padding: 35px 30px 70px;
+}
+
+main > h2 {
+    margin: 0 0 35px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dfd2c1;
+    color: #60452f;
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+/* =========================
+   가게 소개
+========================= */
+#img {
+    width: 100%;
+    margin-bottom: 35px;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+#img img {
+    width: 100%;
+    max-height: 520px;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+#img img:hover {
+    transform: scale(1.02);
+}
+
+#qhsans {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+#qhsans h3 {
+    margin: 0 0 25px;
+    color: #70513a;
+    font-size: 25px;
+    line-height: 1.6;
+    text-align: center;
+    word-break: keep-all;
+}
+
+#qhsans p {
+    margin: 0;
+    color: #5d554c;
+    font-size: 16px;
+    line-height: 2.1;
+    word-break: keep-all;
+}
+
+/* =========================
+   메뉴 카드
+========================= */
+#cuondd {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+#cuondd > div {
+    overflow: hidden;
+    background-color: #fffdf9;
+    border: 1px solid #eee5d9;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(65, 44, 25, 0.06);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+#cuondd > div:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(65, 44, 25, 0.12);
+}
+
+#cuondd img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+}
+
+#cuondd h4 {
+    margin: 18px 20px 8px;
+    color: #60452f;
+    font-size: 20px;
+}
+
+#cuondd p {
+    margin: 0 20px 24px;
+    color: #766b60;
+    font-size: 14px;
+    line-height: 1.8;
+    word-break: keep-all;
+}
+
+/* =========================
+   오시는 길
+========================= */
+#main > p {
+    margin: 0 0 25px;
+    padding: 25px;
+    background-color: #fffdf9;
+    border: 1px solid #eee5d9;
+    border-radius: 10px;
+    color: #5d554c;
+    line-height: 2.2;
+    word-break: keep-all;
+}
+
+#map {
+    overflow: hidden;
+    border: 1px solid #e3d7c8;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(65, 44, 25, 0.08);
+}
+
+/* =========================
+   태블릿 화면
+========================= */
+@media (max-width: 900px) {
+    #cuondd {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    #cuondd img {
+        height: 210px;
+    }
+
+    main {
+        padding: 30px 24px 50px;
+    }
+}
+
+/* =========================
+   모바일 화면
+========================= */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 18px 15px;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+
+    nav ul {
+        justify-content: center;
+        gap: 28px;
+    }
+
+    nav li {
+        font-size: 14px;
+    }
+
+    main {
+        padding: 25px 16px 45px;
+    }
+
+    main > h2 {
+        margin-bottom: 25px;
+        font-size: 24px;
+    }
+
+    #img img {
+        max-height: 300px;
+    }
+
+    #qhsans h3 {
+        font-size: 21px;
+    }
+
+    #qhsans p {
+        font-size: 14px;
+        line-height: 2;
+    }
+
+    #cuondd {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    #cuondd img {
+        height: 240px;
+    }
+
+    #cuondd h4 {
+        font-size: 19px;
+    }
+
+    #main > p {
+        padding: 18px;
+        font-size: 14px;
+    }
+
+    #map {
+        height: 300px !important;
+    }
+}
